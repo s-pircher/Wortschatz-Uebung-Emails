@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>E-Mail-Bausteine üben</title>
+<style>
+:root{--bg:#fffdf6;--fg:#1f2937;--card:#fff;--bd:#d6d3c4;--ac:#1d4ed8;--acf:#fff;--sie:#b91c1c;--sieb:#fee2e2;--du:#15803d;--dub:#dcfce7;--mut:#6b7280;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161c;--fg:#f1f5f9;--card:#1e222b;--bd:#3a4050;--ac:#60a5fa;--acf:#0b1220;--sie:#fca5a5;--sieb:#4c1d1d;--du:#86efac;--dub:#14391f;--mut:#9ca3af;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14161c;--fg:#f1f5f9;--card:#1e222b;--bd:#3a4050;--ac:#60a5fa;--acf:#0b1220;--sie:#fca5a5;--sieb:#4c1d1d;--du:#86efac;--dub:#14391f;--mut:#9ca3af;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.5 Verdana,"Trebuchet MS",sans-serif}
+main{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.2em 0}h2{font-size:1.25rem;margin:.2em 0}
+.card{background:var(--card);border:2px solid var(--bd);border-radius:14px;padding:14px;margin:12px 0}
+.bar{height:10px;background:var(--bd);border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width .3s}
+button,select,input,textarea{font:inherit;color:inherit}
+button{background:var(--card);border:2px solid var(--bd);border-radius:10px;padding:8px 12px;margin:4px 4px 4px 0;cursor:pointer;text-align:left}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+button.p{background:var(--ac);color:var(--acf);border-color:var(--ac);font-weight:bold}
+button.ok{background:var(--dub);border-color:var(--du)}button.no{background:var(--sieb);border-color:var(--sie)}
+button:disabled{opacity:.6;cursor:default}
+.q{margin:14px 0 6px;font-weight:bold}.fb{font-size:.95rem;margin:4px 0;color:var(--mut)}
+.sie{color:var(--sie)}.du{color:var(--du)}
+select,input[type=text],textarea{width:100%;box-sizing:border-box;background:var(--card);border:2px solid var(--bd);border-radius:10px;padding:8px;margin:4px 0}
+textarea{min-height:200px}
+details{border:2px dashed var(--bd);border-radius:12px;padding:8px 12px;margin:12px 0;font-size:.95rem}summary{cursor:pointer;font-weight:bold}
+.mail{border-left:6px solid var(--ac);padding:6px 12px;white-space:pre-wrap;background:var(--card)}
+.chk div{padding:2px 0}
+</style></head><body><main>
+<h1>✉️ E-Mail-Bausteine üben</h1>
+<div class="bar" aria-hidden="true"><i id="pg"></i></div>
+<details><summary>📖 Wortschatz-Kasten (hier ansehen)</summary>
+<p><b>Betreff:</b> kurz, kein ganzer Satz. <i>Treffen am Sonntag · Hausübung nachholen</i></p>
+<p><b>Anrede</b> + Komma, danach klein weiter.<br><span class="sie">🔴 Sie:</span> Sehr geehrte Frau …, / Sehr geehrter Herr …, / Sehr geehrte Damen und Herren,<br><span class="du">🟢 du:</span> Liebe Maya, / Lieber Ben, / Hallo …,</p>
+<p><b>Text:</b><br><span class="sie">🔴</span> ich schreibe Ihnen, weil … · ich habe eine Frage zu … · Könnten Sie mir bitte … schicken? · Bitte geben Sie mir Bescheid.<br><span class="du">🟢</span> ich schreibe dir, weil … · Hast du Lust, …? · Kannst du mir bitte … mitbringen? · Sag mir bitte Bescheid.<br>Grund: Ich kann heute leider nicht kommen, weil ich krank bin.</p>
+<p><b>Gruß</b> (kein Punkt, kein Komma):<br><span class="sie">🔴</span> Mit freundlichen Grüßen · Mit besten Grüßen<br><span class="du">🟢</span> Viele Grüße · Liebe Grüße · Bis bald!</p></details>
+<div id="app"></div>
+</main>
+<script>
+const $=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const app=document.getElementById("app");
+let name="",cur=0,pts=0,max=0,log=[],mail="";
+const SD=["🔴 Sie (höflich)","🟢 du (persönlich)"];
+const S=[
+{h:"1. Die Reihenfolge",i:"Eine E-Mail hat vier Teile. Tippe sie in der richtigen Reihenfolge an: oben zuerst.",k:"order"},
+{h:"2. du oder Sie?",i:"Tipp: Sie, Ihnen = höflich. du, dir, dich = persönlich.",k:"mc",it:[
+["Könnten Sie mir bitte helfen?",SD,0,"„Sie“ steht im Satz: höflich."],
+["Hast du Lust, ins Kino zu gehen?",SD,1,"„du“ steht im Satz: persönlich."],
+["Ich schreibe Ihnen, weil …",SD,0,"„Ihnen“ mit großem I: höflich."],
+["Ich hoffe, es geht dir gut!",SD,1,"„dir“: persönlich."],
+["Mit freundlichen Grüßen",SD,0,"Das ist ein höflicher Gruß."],
+["Bis bald!",SD,1,"Das sagst du zu Freunden und Familie."]]},
+{h:"3. Die Anrede",i:"Wähle die richtige Anrede. Denk an das Komma!",k:"mc",it:[
+["Du schreibst an Frau Bauer, deine Lehrerin.",["Hallo Bauer,","Sehr geehrte Frau Bauer,","Sehr geehrte Frau Bauer","Liebe Frau Bauer!"],1,"Sie-Form + Komma am Ende."],
+["Du schreibst an deinen Freund Ben.",["Sehr geehrter Ben,","Lieber Ben.","Lieber Ben,","Sehr geehrter Herr Ben,"],2,"du-Form: Lieber Ben, + Komma."],
+["Du schreibst an die Schule. Du kennst keinen Namen.",["Liebe Schule,","Sehr geehrte Damen und Herren,","Hallo Leute,","Sehr geehrte Schule,"],1,"Wenn du den Namen nicht weißt: Damen und Herren."],
+["Wie geht der Text nach „Liebe Maya,“ weiter?",["Ich schreibe dir, weil …","ich schreibe dir, weil …","ICH schreibe dir, weil …"],1,"Nach dem Komma schreibst du klein weiter."]]},
+{h:"4. Der Betreff",i:"Der Betreff ist kurz und knackig. Kein ganzer Satz!",k:"mc",it:[
+["Du fragst, ob du die Hausübung nachholen darfst.",["Hausübung nachholen","Guten Tag, ich möchte fragen, ob ich die Hausübung nachholen darf","Hallo!!!"],0,"Wenige Wörter, sagt klar, worum es geht."],
+["Du lädst deine Klasse zum Frühlingsfest ein.",["Einladung zum Frühlingsfest","Ich lade euch alle herzlich zum Frühlingsfest in unserer Schule ein","Fest"],0,"Kurz, aber nicht zu kurz."]]},
+{h:"5. Lücken füllen",i:"Welches Wort passt? Achte auf die Anrede.",k:"mc",it:[
+["Sehr geehrte Frau Huber,<br>ich schreibe ___, weil ich eine Frage habe.",["dir","Ihnen","euch"],1,"Frau Huber = Sie-Form → Ihnen."],
+["Lieber Ben,<br>hast ___ Lust, am Sonntag Fußball zu spielen?",["du","Sie","Ihnen"],0,"Ben ist ein Freund → du."],
+["Sehr geehrter Herr Maier,<br>könnten ___ mir bitte die Infos schicken?",["du","Sie","dir"],1,"Herr Maier = Sie-Form → Sie."],
+["Liebe Oma,<br>ich hoffe, es geht ___ gut!",["dir","Ihnen","Sie"],0,"Oma = du-Form → dir."]]},
+{h:"6. Der Gruß",i:"Wie endet die E-Mail? Nach dem Gruß steht KEIN Punkt und KEIN Komma.",k:"mc",it:[
+["Du schreibst an die Direktorin.",["Bis bald!","Mit freundlichen Grüßen","Ich hab dich lieb."],1,"Höflich: Mit freundlichen Grüßen."],
+["Du schreibst an deine Freundin Maya.",["Mit freundlichen Grüßen","Sehr geehrte Grüße","Liebe Grüße"],2,"Persönlich: Liebe Grüße."],
+["Was steht nach „Mit freundlichen Grüßen“?",["ein Punkt","ein Komma","nichts"],2,"Nach dem Gruß steht nichts."]]},
+{h:"7. E-Mail bauen",i:"Du bist krank und schreibst an Frau Bauer, deine Lehrerin. Wähle jeden Baustein.",k:"build"},
+{h:"8. Schreib deine E-Mail",i:"Wähle eine Aufgabe und schreibe selbst. Nutze den Wortschatz-Kasten oben.",k:"write"}];
+const B=[["Betreff",["Fehlen wegen Krankheit","Guten Tag, ich bin heute krank und komme nicht in die Schule","Hallo!!!"],0],
+["Anrede",["Hallo Bauer,","Sehr geehrte Frau Bauer,","Liebe Frau Bauer."],1],
+["Start",["ich schreibe dir, weil …","ich schreibe Ihnen, weil …","Hast du Lust, …?"],1],
+["Grund",["Ich kann heute leider nicht kommen, weil ich krank bin.","Hast du Lust, heute zu kommen?","Ich hab dich lieb."],0],
+["Bitte",["Sag mir bitte Bescheid.","Bitte geben Sie mir Bescheid.","Kannst du mir bitte etwas mitbringen?"],1],
+["Gruß",["Bis bald!","Liebe Grüße","Mit freundlichen Grüßen"],2]];
+const T={A:{f:"Sie",t:"Aufgabe A (🔴 Sie): Du bist krank. Schreibe an Frau Bauer. Sag, warum du fehlst, und bitte um die Hausübung."},
+B:{f:"du",t:"Aufgabe B (🟢 du): Schreibe deinem Freund Ben. Lade ihn am Sonntag zum Fußball ein und frage, ob er Zeit hat."}};
+function upd(){document.getElementById("pg").style.width=(cur/(S.length+1)*100)+"%"}
+function start(){app.innerHTML="";const c=$("div","card","<h2>Willkommen!</h2><p>Du übst 8 Aufgaben (ca. 35–40 Minuten). Du lernst: Betreff, Anrede, Text, Gruß – und wann du „du“ oder „Sie“ schreibst.</p><p>Wie heißt du?</p>");
+const n=$("input");n.type="text";n.setAttribute("aria-label","Dein Name");c.append(n);
+const b=$("button","p","Los geht’s");b.onclick=()=>{if(!n.value.trim()){n.focus();return}name=n.value.trim();step()};c.append(b);app.append(c);upd()}
+function step(){upd();if(cur>=S.length)return done();const s=S[cur];app.innerHTML="";const c=$("div","card","<h2>"+s.h+"</h2><p>"+s.i+"</p>");app.append(c);
+const nx=$("button","p","Weiter ➜");nx.hidden=true;nx.onclick=()=>{cur++;step();window.scrollTo(0,0)};
+const fin=()=>{nx.hidden=false;nx.scrollIntoView({block:"nearest"})};
+if(s.k=="mc")mc(c,s,fin);if(s.k=="order")order(c,s,fin);if(s.k=="build")build(c,s,fin);if(s.k=="write")write(c,s,nx,fin);
+c.append(nx)}
+function mc(c,s,fin){let left=s.it.length;s.it.forEach(([q,o,a,tip])=>{max++;c.append($("div","q",q));const fb=$("div","fb");let tries=0,dn=false;const w=$("div");
+o.forEach((t,j)=>{const b=$("button","",t);b.onclick=()=>{if(dn)return;tries++;if(j==a){dn=true;b.className="ok";if(tries==1)pts++;fb.textContent="✅ Richtig! "+tip;log.push(s.h+" | "+q.replace(/<br>/g," ")+" | Versuche: "+tries);if(--left==0)fin()}else{b.className="no";b.disabled=true;fb.textContent="❌ Noch nicht. Versuch es nochmal."}};w.append(b)});c.append(w,fb)})}
+function order(c,s,fin){max++;const need=["Betreff","Anrede","Text","Gruß"],pick=["Gruß","Betreff","Text","Anrede"];let got=[],tries=1;const sl=$("div","mail","(hier erscheint deine Reihenfolge)"),fb=$("div","fb");
+pick.forEach(t=>{const b=$("button","",t);b.onclick=()=>{if(b.disabled)return;if(t==need[got.length]){got.push(t);b.disabled=true;b.className="ok";sl.textContent=got.map((x,i)=>(i+1)+". "+x).join("\n");if(got.length==4){if(tries==1)pts++;fb.textContent="✅ Super! Betreff → Anrede → Text → Gruß.";log.push(s.h+" | Versuche: "+tries);fin()}}else{tries++;fb.textContent="❌ Das kommt noch nicht. Was steht ganz oben, wenn du die E-Mail öffnest?"}};c.append(b)});c.append(sl,fb)}
+function build(c,s,fin){const sel=[];B.forEach(([l,o])=>{c.append($("div","q",l));const x=$("select");x.setAttribute("aria-label",l);x.append(new Option("– wähle –",""));o.forEach((t,i)=>x.append(new Option(t,i)));sel.push(x);c.append(x)});
+const b=$("button","p","Prüfen ✔"),fb=$("div","fb"),m=$("div","mail");m.hidden=true;let tries=0;max+=B.length;
+b.onclick=()=>{tries++;let ok=0;sel.forEach((x,i)=>{const r=x.value!==""&&+x.value==B[i][2];x.style.borderColor=r?"var(--du)":"var(--sie)";if(r)ok++});
+if(ok==B.length){if(tries==1)pts+=B.length;else pts+=Math.max(2,B.length-tries);fb.textContent="✅ Alles richtig! So sieht deine E-Mail aus:";m.hidden=false;m.textContent="Betreff: "+B[0][1][0]+"\n\n"+B[1][1][1]+"\n"+B[2][1][1]+" "+B[3][1][0].charAt(0).toLowerCase()+B[3][1][0].slice(1)+"\n"+B[4][1][1]+"\n\n"+B[5][1][2];log.push(s.h+" | Versuche: "+tries);b.disabled=true;fin()}else fb.textContent="Das passt noch nicht bei "+(B.length-ok)+" Baustein(en). Rot = falsch. Tipp: Frau Bauer ist deine Lehrerin → Sie-Form."};c.append(b,fb,m)}
+function write(c,s,nx,fin){let task=null;const w=$("div");c.append(w);["A","B"].forEach(k=>{const b=$("button","",T[k].t);b.onclick=()=>{task=k;go()};w.append(b)});
+function go(){w.innerHTML="<div class='q'>"+T[task].t+"</div>";const f=T[task].f,bi=$("input");bi.type="text";bi.placeholder="Betreff";bi.setAttribute("aria-label","Betreff");
+const ta=$("textarea");ta.placeholder="Anrede,\nText …\n\nGruß";ta.setAttribute("aria-label","Text der E-Mail");const out=$("div","chk"),b=$("button","p","Prüfen ✔");
+b.onclick=()=>{const L=ta.value.split("\n").map(x=>x.trim()).filter(Boolean),v=L.join(" "),wc=v.split(/\s+/).filter(Boolean).length,bw=bi.value.trim().split(/\s+/).filter(Boolean).length;
+const an=f=="Sie"?/^Sehr geehrte(r)? (Frau|Herr) \S+,$|^Sehr geehrte Damen und Herren,$/:/^(Liebe|Lieber) \S+,$|^Hallo \S+,$/;
+const gr=f=="Sie"?/^Mit (freundlichen|besten) Grüßen$/:/^(Viele Grüße|Liebe Grüße|Bis \S+!?)$/;
+const fm=f=="Sie"?/\b(Sie|Ihnen|Ihr)\b/.test(v)&&!/\b(du|dir|dich)\b/i.test(v):/\b(du|dir|dich)\b/i.test(v)&&!/\b(Sie|Ihnen)\b/.test(v);
+const C=[["Betreff: kurz (1–5 Wörter), kein Satz",bw>=1&&bw<=5&&!/[.!?]$/.test(bi.value.trim())],["Anrede passt zu "+f+"-Form und endet mit Komma",!!L[0]&&an.test(L[0])],["Nach der Anrede klein weiter",!!L[1]&&/^[a-zäöü]/.test(L[1])],["Richtige Wörter ("+(f=="Sie"?"Sie/Ihnen":"du/dir")+")",fm],["Mindestens 30 Wörter",wc>=30],["Gruß passt, ohne Punkt und Komma am Ende",L.length>2&&gr.test(L[L.length-1])],["Gruß steht in einer eigenen Zeile",L.length>2]];
+let ok=0;out.innerHTML="";C.forEach(([t,r])=>{if(r)ok++;out.append($("div","",(r?"✅ ":"⬜ ")+t))});
+mail="Aufgabe "+task+"\nBetreff: "+bi.value+"\n"+ta.value;window._w=ok;window._wm=C.length;
+out.append($("div","fb",ok==C.length?"🎉 Perfekt! Alles passt.":"Verbessere die ⬜ und drücke nochmal auf Prüfen. Wenn du fertig bist, drücke „Fertig“."));
+if(!window._fb){window._fb=1;const d=$("button","","Fertig ➜");d.onclick=()=>{max+=C.length;pts+=window._w;log.push(S[cur].h+" | Checks erfüllt: "+window._w+"/"+C.length);cur++;step()};out.after(d)}};
+w.append(bi,ta,b,out)}}
+function done(){app.innerHTML="";const p=Math.round(pts/max*100);
+const rep="Ergebnis E-Mail-Bausteine\nName: "+name+"\nPunkte: "+pts+" von "+max+" ("+p+" %)\n\n"+log.join("\n")+"\n\n--- Text der Schülerin / des Schülers ---\n"+mail;
+const c=$("div","card","<h2>🎉 Geschafft, "+name.replace(/</g,"&lt;")+"!</h2><p>Du hast <b>"+pts+" von "+max+"</b> Punkten ("+p+" %).</p><p>Tipp: Was war schwer? Schau nochmal in den Wortschatz-Kasten.</p>");
+const ta=$("textarea");ta.value=rep;ta.readOnly=true;ta.setAttribute("aria-label","Ergebnis");const b=$("button","p","📋 Ergebnis kopieren"),fb=$("div","fb");
+b.onclick=async()=>{try{await navigator.clipboard.writeText(rep);fb.textContent="Kopiert! Schick es deiner Lehrerin / deinem Lehrer."}catch(e){ta.select();fb.textContent="Markiere den Text und kopiere ihn (Strg+C)."}};
+c.append(ta,b,fb);app.append(c);cur=S.length;upd();document.getElementById("pg").style.width="100%"}
+start();
+</script></body></html>
